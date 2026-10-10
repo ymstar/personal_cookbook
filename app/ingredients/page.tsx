@@ -24,13 +24,17 @@ export default async function IngredientsPage() {
       <header
         className="sticky top-0 z-10 flex items-center justify-between border-b px-4"
         style={{
-          background: "var(--bg)",
+          background: "rgba(250, 247, 242, 0.85)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           borderColor: "var(--line)",
           paddingTop: "calc(8px + env(safe-area-inset-top))",
           paddingBottom: "8px",
         }}
       >
-        <h1 className="text-lg font-bold">🧺 食材</h1>
+        <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
+          🧺 食材
+        </h1>
       </header>
 
       <main
@@ -55,7 +59,7 @@ export default async function IngredientsPage() {
             <div
               key={cat}
               className="mb-3.5 rounded-2xl p-3.5"
-              style={{ background: "var(--card)", boxShadow: "var(--shadow" }}
+              style={{ background: "var(--card)", boxShadow: "var(--shadow)" }}
             >
               <h2
                 className="mb-2 text-base font-bold"

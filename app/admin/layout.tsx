@@ -25,13 +25,17 @@ export default async function AdminLayout({
       <header
         className="sticky top-0 z-10 flex items-center justify-between border-b px-4"
         style={{
-          background: "var(--bg)",
+          background: "rgba(250, 247, 242, 0.85)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           borderColor: "var(--line)",
           paddingTop: "calc(8px + env(safe-area-inset-top))",
           paddingBottom: "8px",
         }}
       >
-        <h1 className="text-lg font-bold">✏️ 管理</h1>
+        <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
+          ✏️ 管理
+        </h1>
         <a
           href="/admin/ingredients"
           className="rounded-lg px-2.5 py-1 text-sm"

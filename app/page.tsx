@@ -18,13 +18,17 @@ export default async function HomePage() {
       <header
         className="sticky top-0 z-10 flex items-center justify-between border-b px-4"
         style={{
-          background: "var(--bg)",
+          background: "rgba(250, 247, 242, 0.85)",
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
           borderColor: "var(--line)",
           paddingTop: "calc(8px + env(safe-area-inset-top))",
           paddingBottom: "8px",
         }}
       >
-        <h1 className="text-lg font-bold">🍳 我的菜谱</h1>
+        <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
+          🍳 小沙的个人菜谱
+        </h1>
       </header>
 
       <main

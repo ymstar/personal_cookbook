@@ -1,12 +1,12 @@
 {
-  "name": "我的菜谱",
-  "short_name": "菜谱",
+  "name": "小沙的个人菜谱",
+  "short_name": "小沙菜谱",
   "description": "练过的菜：标准做法 + 我的做法 + 成果图",
   "start_url": ".",
   "scope": ".",
   "display": "standalone",
-  "background_color": "#faf6f1",
-  "theme_color": "#e0532f",
+  "background_color": "#faf7f2",
+  "theme_color": "#c4826a",
   "icons": [
     { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
