@@ -5,6 +5,10 @@ export const metadata: Metadata = {
   title: "🍳 小沙的个人菜谱",
   description: "自己做饭的菜谱本",
   manifest: "/manifest.webmanifest",
+  icons: {
+    icon: "/icon-192.png",
+    apple: "/apple-touch-icon.png",
+  },
   appleWebApp: {
     capable: true,
     title: "小沙菜谱",
