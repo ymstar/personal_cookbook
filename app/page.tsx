@@ -2,6 +2,7 @@ import { getRecipes } from "@/lib/db";
 import type { Recipe } from "@/lib/types";
 import { RecipeList } from "@/components/RecipeList";
 import { BottomNav } from "@/components/BottomNav";
+import { GitHubLink } from "@/components/GitHubLink";
 
 export const dynamic = "force-dynamic";
 
@@ -29,6 +30,7 @@ export default async function HomePage() {
         <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
           🍳 小沙的个人菜谱
         </h1>
+        <GitHubLink />
       </header>
 
       <main

@@ -1,6 +1,7 @@
 import { isAuthenticated } from "@/lib/auth";
 import { LoginForm } from "@/components/LoginForm";
 import { BottomNav } from "@/components/BottomNav";
+import { GitHubLink } from "@/components/GitHubLink";
 
 export const dynamic = "force-dynamic";
 
@@ -36,13 +37,16 @@ export default async function AdminLayout({
         <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
           ✏️ 管理
         </h1>
-        <a
-          href="/admin/ingredients"
-          className="rounded-lg px-2.5 py-1 text-sm"
-          style={{ color: "var(--muted)" }}
-        >
-          食材管理
-        </a>
+        <div className="flex items-center gap-2">
+          <a
+            href="/admin/ingredients"
+            className="rounded-lg px-2.5 py-1 text-sm"
+            style={{ color: "var(--muted)" }}
+          >
+            食材管理
+          </a>
+          <GitHubLink />
+        </div>
       </header>
       <main
         className="mx-auto"

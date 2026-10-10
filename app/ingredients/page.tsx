@@ -1,6 +1,7 @@
 import { getIngredients } from "@/lib/db";
 import type { Ingredient } from "@/lib/types";
 import { BottomNav } from "@/components/BottomNav";
+import { GitHubLink } from "@/components/GitHubLink";
 
 export const dynamic = "force-dynamic";
 
@@ -35,6 +36,7 @@ export default async function IngredientsPage() {
         <h1 className="text-lg font-bold" style={{ color: "var(--ink)" }}>
           🧺 食材
         </h1>
+        <GitHubLink />
       </header>
 
       <main
