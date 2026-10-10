@@ -1,11 +1,11 @@
 /**
  * 数据库建表 + 迁移示例数据
  *
- * 用法：npx tsx scripts/migrate.ts
+ * 用法：npx tsx --env-file=.env.local scripts/migrate.ts
  *
  * 需要配置好 POSTGRES_URL 环境变量（写 .env.local 或直接 export）
  */
-import { sql } from "@vercel/postgres";
+import pg from "pg";
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
@@ -144,17 +144,24 @@ function parseRecipes(md: string, count: number): ParsedRecipe[] {
 // ── 主流程 ──
 
 async function main() {
+  const client = new pg.Client({
+    connectionString: process.env.POSTGRES_URL,
+    ssl: { rejectUnauthorized: false },
+  });
+  await client.connect();
+
   console.log("📋 建表…");
   for (const stmt of SCHEMA_STMTS) {
-    await sql.query(stmt);
+    await client.query(stmt);
   }
   console.log("   ✅ 表结构就绪");
 
   // 检查是否已有数据
-  const { rows: existing } = await sql`SELECT count(*) as n FROM recipes`;
+  const { rows: existing } = await client.query("SELECT count(*) as n FROM recipes");
   if (Number(existing[0].n) > 0) {
     console.log(`⚠️  数据库已有 ${existing[0].n} 道菜，跳过数据导入`);
     console.log("   如需重新导入，请先手动清空表。");
+    await client.end();
     return;
   }
 
@@ -163,10 +170,10 @@ async function main() {
   const ingMd = fs.readFileSync(path.join(SRC_DIR, "ingredients.md"), "utf8");
   const ings = parseIngredients(ingMd);
   for (let i = 0; i < ings.length; i++) {
-    await sql`
-      INSERT INTO ingredients (category, name, sort_order)
-      VALUES (${ings[i].category}, ${ings[i].name}, ${i})
-    `;
+    await client.query(
+      "INSERT INTO ingredients (category, name, sort_order) VALUES ($1, $2, $3)",
+      [ings[i].category, ings[i].name, i],
+    );
   }
   console.log(`   ✅ ${ings.length} 个食材`);
 
@@ -198,24 +205,25 @@ async function main() {
     }
 
     // 插入菜谱
-    const { rows } = await sql`
-      INSERT INTO recipes (title, category, last_practice, steps, notes)
-      VALUES (${r.title}, ${r.category}, ${r.lastPractice}, ${r.steps}, ${r.notes})
-      RETURNING id
-    `;
+    const { rows } = await client.query(
+      "INSERT INTO recipes (title, category, last_practice, steps, notes) VALUES ($1, $2, $3, $4, $5) RETURNING id",
+      [r.title, r.category, r.lastPractice, r.steps, r.notes],
+    );
     const recipeId = rows[0].id;
 
     // 插入图片
     for (let i = 0; i < imageUrls.length; i++) {
-      await sql`
-        INSERT INTO recipe_images (recipe_id, url, alt, sort_order)
-        VALUES (${recipeId}, ${imageUrls[i].url}, ${imageUrls[i].alt}, ${i})
-      `;
+      await client.query(
+        "INSERT INTO recipe_images (recipe_id, url, alt, sort_order) VALUES ($1, $2, $3, $4)",
+        [recipeId, imageUrls[i].url, imageUrls[i].alt, i],
+      );
     }
   }
 
   console.log(`   ✅ ${recipes.length} 道菜谱`);
   console.log("\n🎉 迁移完成！");
+
+  await client.end();
 }
 
 main().catch((e) => {
